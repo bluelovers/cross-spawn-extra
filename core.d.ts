@@ -57,7 +57,7 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
     use(cs?: any, p?: any): CrossSpawnExtra;
     use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
-    core<T>(command: string, args?: string[], options?: child_process.SpawnOptions): child_process.ChildProcess;
+    core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess;
     core<T>(...argv: any[]): child_process.ChildProcess;
     sync(command: string): SpawnSyncReturns<Buffer>;
     sync(command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
@@ -67,7 +67,12 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
     sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
     sync<T = Buffer>(...argv: any[]): SpawnSyncReturns<T>;
-    async<T = Buffer>(command: string, args?: string[], options?: child_process.SpawnOptions): SpawnASyncReturnsPromise<T>;
+    async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
     async<T = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T>;
+    static stripAnsi(input: Buffer, toStr: true): string;
+    static stripAnsi(input: Buffer, toStr?: boolean): Buffer;
+    static stripAnsi(input: string, toStr?: boolean): string;
+    static stripAnsi<T>(input: T, toStr: true): string;
+    static stripAnsi<T>(input: T, toStr?: boolean): T;
 }
 export default CrossSpawnExtra;

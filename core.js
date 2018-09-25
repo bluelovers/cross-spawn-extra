@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CallableInstance = require("callable-instance2");
 const CrossSpawn = require("cross-spawn");
 const bluebird = require("bluebird");
+const stripAnsi = require("strip-ansi");
 exports.SYM_CROSS_SPAWN = Symbol('cross-spawn');
 exports.SYM_BLUEBIRD = Symbol('bluebird');
 class CrossSpawnExtra extends CallableInstance {
@@ -31,7 +32,7 @@ class CrossSpawnExtra extends CallableInstance {
         ret.then = bluebird.method((fn) => fn(ret));
         return ret;
     }
-    async(...argv) {
+    async(command, args, options) {
         let self = this;
         let cache = {
             output: [],
@@ -41,6 +42,7 @@ class CrossSpawnExtra extends CallableInstance {
         let child;
         let fn = self[exports.SYM_CROSS_SPAWN];
         let ret = bluebird.resolve();
+        let argv = [command, args, options];
         child = fn(...argv);
         ret.child = child;
         child.stderrStream = child.stderr;
@@ -72,6 +74,10 @@ class CrossSpawnExtra extends CallableInstance {
             function done(event) {
                 let stderr = Buffer.concat(cache.stderr);
                 let stdout = Buffer.concat(cache.stdout);
+                if (options.stripAnsi) {
+                    stderr = CrossSpawnExtra.stripAnsi(stderr);
+                    stdout = CrossSpawnExtra.stripAnsi(stdout);
+                }
                 child.stderr = stderr;
                 child.stdout = stdout;
                 child.output = [null, stdout, stderr];
@@ -94,6 +100,15 @@ class CrossSpawnExtra extends CallableInstance {
         }));
         ret.child = child;
         return ret;
+    }
+    static stripAnsi(input, toStr) {
+        let isBuffer = Buffer.isBuffer(input);
+        input = input.toString();
+        input = stripAnsi(input);
+        if (isBuffer && !toStr) {
+            return Buffer.from(input);
+        }
+        return input;
     }
 }
 exports.CrossSpawnExtra = CrossSpawnExtra;

@@ -14,6 +14,7 @@ import {
 import bluebird = require('bluebird');
 import * as child_process from 'child_process';
 import * as stream from "stream";
+import stripAnsi = require('strip-ansi');
 
 import {
 	SpawnOptions,
@@ -140,7 +141,7 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		return new CrossSpawnExtra<R>(cs, p)
 	}
 
-	core<T>(command: string, args?: string[], options?: child_process.SpawnOptions): child_process.ChildProcess
+	core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess
 	core<T>(...argv): child_process.ChildProcess
 	core<T>(...argv): child_process.ChildProcess
 	{
@@ -164,9 +165,9 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		return ret;
 	}
 
-	async<T = Buffer>(command: string, args?: string[], options?: child_process.SpawnOptions): SpawnASyncReturnsPromise<T>
+	async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
 	async<T = Buffer>(...argv): SpawnASyncReturnsPromise<T>
-	async<T = Buffer>(...argv): SpawnASyncReturnsPromise<T>
+	async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
 	{
 		let self = this;
 
@@ -180,6 +181,8 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		let fn = self[SYM_CROSS_SPAWN] as typeof CrossSpawn;
 
 		let ret = bluebird.resolve();
+
+		let argv = [command, args, options];
 
 		// @ts-ignore
 		child = fn(...argv);
@@ -241,6 +244,12 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 				let stderr = Buffer.concat(cache.stderr);
 				let stdout = Buffer.concat(cache.stdout);
 
+				if (options.stripAnsi)
+				{
+					stderr = CrossSpawnExtra.stripAnsi(stderr);
+					stdout = CrossSpawnExtra.stripAnsi(stdout);
+				}
+
 				// @ts-ignore
 				child.stderr = stderr;
 				// @ts-ignore
@@ -281,6 +290,27 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 		// @ts-ignore
 		return ret;
+	}
+
+	static stripAnsi(input: Buffer, toStr: true): string
+	static stripAnsi(input: Buffer, toStr?: boolean): Buffer
+	static stripAnsi(input: string, toStr?: boolean): string
+	static stripAnsi<T>(input: T, toStr: true): string
+	static stripAnsi<T>(input: T, toStr?: boolean): T
+	static stripAnsi(input: string | Buffer, toStr?: boolean)
+	{
+		let isBuffer = Buffer.isBuffer(input);
+
+		input = input.toString();
+
+		input = stripAnsi(input);
+
+		if (isBuffer && !toStr)
+		{
+			return Buffer.from(input);
+		}
+
+		return input;
 	}
 }
 

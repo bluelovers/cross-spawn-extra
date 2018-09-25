@@ -10,6 +10,7 @@ export interface SpawnOptions {
     shell?: boolean | string;
     windowsVerbatimArguments?: boolean;
     windowsHide?: boolean;
+    stripAnsi?: boolean;
 }
 export interface SpawnSyncOptions {
     cwd?: string;
@@ -25,6 +26,7 @@ export interface SpawnSyncOptions {
     shell?: boolean | string;
     windowsHide?: boolean;
     windowsVerbatimArguments?: boolean;
+    stripAnsi?: boolean;
 }
 export interface SpawnSyncOptionsWithStringEncoding extends SpawnSyncOptions {
     encoding: BufferEncoding;

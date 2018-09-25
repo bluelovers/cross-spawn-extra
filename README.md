@@ -10,6 +10,7 @@ npm install cross-spawn-extra cross-spawn
 
 [index.d.ts](index.d.ts)
 [core.d.ts](core.d.ts)
+[type.d.ts](type.d.ts)
 
 ```ts
 import crossSpawn = require('cross-spawn-extra');
