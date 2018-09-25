@@ -153,21 +153,31 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	sync(command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
 	sync(command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
 	sync(command: string, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
-	sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
-	sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
-	sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
+	sync(command: string, args?: Array<string>, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
+	sync(command: string, args?: Array<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
+	sync(command: string, args?: Array<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
 	sync<T = Buffer>(...argv): SpawnSyncReturns<T>
 	sync<T = Buffer>(...argv): SpawnSyncReturns<T>
 	{
 		// @ts-ignore
-		let ret = this[SYM_CROSS_SPAWN].sync<T>(...argv);
-		ret.then = bluebird.method((fn) => fn(ret));
-		return ret;
+		let child = this[SYM_CROSS_SPAWN].sync<T>(...argv);
+		child.then = bluebird.method((fn) => fn(child));
+
+		let [command, args, options] = argv;
+
+		if (options && options.stripAnsi)
+		{
+			child.stderr = CrossSpawnExtra.stripAnsi(child.stderr);
+			child.stdout = CrossSpawnExtra.stripAnsi(child.stdout);
+		}
+
+		return child;
 	}
 
 	async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
+	async<T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
 	async<T = Buffer>(...argv): SpawnASyncReturnsPromise<T>
-	async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
+	async<T = Buffer>(...argv): SpawnASyncReturnsPromise<T>
 	{
 		let self = this;
 
@@ -182,7 +192,7 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 		let ret = bluebird.resolve();
 
-		let argv = [command, args, options];
+		let [command, args, options] = argv;
 
 		// @ts-ignore
 		child = fn(...argv);
@@ -244,7 +254,7 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 				let stderr = Buffer.concat(cache.stderr);
 				let stdout = Buffer.concat(cache.stdout);
 
-				if (options.stripAnsi)
+				if (options && options.stripAnsi)
 				{
 					stderr = CrossSpawnExtra.stripAnsi(stderr);
 					stdout = CrossSpawnExtra.stripAnsi(stdout);

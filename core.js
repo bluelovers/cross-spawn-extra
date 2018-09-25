@@ -28,11 +28,16 @@ class CrossSpawnExtra extends CallableInstance {
         return this[exports.SYM_CROSS_SPAWN](...argv);
     }
     sync(...argv) {
-        let ret = this[exports.SYM_CROSS_SPAWN].sync(...argv);
-        ret.then = bluebird.method((fn) => fn(ret));
-        return ret;
+        let child = this[exports.SYM_CROSS_SPAWN].sync(...argv);
+        child.then = bluebird.method((fn) => fn(child));
+        let [command, args, options] = argv;
+        if (options && options.stripAnsi) {
+            child.stderr = CrossSpawnExtra.stripAnsi(child.stderr);
+            child.stdout = CrossSpawnExtra.stripAnsi(child.stdout);
+        }
+        return child;
     }
-    async(command, args, options) {
+    async(...argv) {
         let self = this;
         let cache = {
             output: [],
@@ -42,7 +47,7 @@ class CrossSpawnExtra extends CallableInstance {
         let child;
         let fn = self[exports.SYM_CROSS_SPAWN];
         let ret = bluebird.resolve();
-        let argv = [command, args, options];
+        let [command, args, options] = argv;
         child = fn(...argv);
         ret.child = child;
         child.stderrStream = child.stderr;
@@ -74,7 +79,7 @@ class CrossSpawnExtra extends CallableInstance {
             function done(event) {
                 let stderr = Buffer.concat(cache.stderr);
                 let stdout = Buffer.concat(cache.stdout);
-                if (options.stripAnsi) {
+                if (options && options.stripAnsi) {
                     stderr = CrossSpawnExtra.stripAnsi(stderr);
                     stdout = CrossSpawnExtra.stripAnsi(stdout);
                 }

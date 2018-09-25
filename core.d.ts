@@ -63,11 +63,12 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     sync(command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
     sync(command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
     sync(command: string, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
-    sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
-    sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
-    sync(command: string, args?: ReadonlyArray<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
+    sync(command: string, args?: Array<string>, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
+    sync(command: string, args?: Array<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
+    sync(command: string, args?: Array<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
     sync<T = Buffer>(...argv: any[]): SpawnSyncReturns<T>;
     async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
+    async<T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
     async<T = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T>;
     static stripAnsi(input: Buffer, toStr: true): string;
     static stripAnsi(input: Buffer, toStr?: boolean): Buffer;
