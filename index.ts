@@ -1,11 +1,40 @@
-/**
- * Created by user on 2018/9/25/025.
- */
+/// <reference types="node" />
 
+import * as child_process from 'child_process';
+import * as stream from "stream";
 import bluebird = require('bluebird');
 import CrossSpawn = require('cross-spawn');
-import CrossSpawnExtra from './core';
+import {
+	CrossSpawnExtra,
+} from './core';
+
+import {
+	SpawnASyncReturns,
+	SpawnASyncReturnsPromise,
+	SpawnSyncReturns,
+	ISpawnASyncError,
+} from './core';
+
+import {
+	SpawnOptions,
+	SpawnSyncOptions,
+	SpawnSyncOptionsWithBufferEncoding,
+	SpawnSyncOptionsWithStringEncoding,
+} from "./type";
+
+export {
+	SpawnOptions,
+	SpawnSyncOptions,
+	SpawnSyncOptionsWithBufferEncoding,
+	SpawnSyncOptionsWithStringEncoding,
+
+	SpawnASyncReturns,
+	SpawnASyncReturnsPromise,
+	SpawnSyncReturns,
+	ISpawnASyncError,
+}
 
 const crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, bluebird);
 
+// @ts-ignore
 export = crossSpawnExtra

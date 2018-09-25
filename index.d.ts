@@ -1,4 +1,7 @@
 /// <reference types="node" />
-import CrossSpawnExtra from './core';
-declare const crossSpawnExtra: CrossSpawnExtra<import("./core").SpawnASyncReturnsPromise<Buffer>>;
+import { CrossSpawnExtra } from './core';
+import { SpawnASyncReturns, SpawnASyncReturnsPromise, SpawnSyncReturns, ISpawnASyncError } from './core';
+import { SpawnOptions, SpawnSyncOptions, SpawnSyncOptionsWithBufferEncoding, SpawnSyncOptionsWithStringEncoding } from "./type";
+export { SpawnOptions, SpawnSyncOptions, SpawnSyncOptionsWithBufferEncoding, SpawnSyncOptionsWithStringEncoding, SpawnASyncReturns, SpawnASyncReturnsPromise, SpawnSyncReturns, ISpawnASyncError, };
+declare const crossSpawnExtra: CrossSpawnExtra<SpawnASyncReturnsPromise<Buffer>>;
 export = crossSpawnExtra;

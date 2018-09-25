@@ -68,6 +68,29 @@ function log(child: SpawnASyncReturns)
 }
 ```
 
+> if typescript fail when use `crossSpawn` , try use `crossSpawn.async`
+
+```ts
+let bin = './bin/log0001';
+
+let cp = crossSpawn.async('node', [
+	bin,
+], {
+	cwd: __dirname,
+})
+	.then(function (child)
+	{
+		return log(child);
+	})
+	.catch(function (err)
+	{
+		let child = err.child;
+
+		return log(child);
+	})
+;
+```
+
 `stdout` only show stdout  
 `stderr` only show stderr
 

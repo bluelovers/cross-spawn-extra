@@ -8,10 +8,11 @@ import { SpawnASyncReturns } from '../core';
 
 let bin = './bin/log0001';
 
-let cp = crossSpawn('node', [
+let cp = crossSpawn.async('node', [
 		bin,
 ], {
 	cwd: __dirname,
+	stdio: 'inherit'
 })
 	.then(function (child)
 	{
