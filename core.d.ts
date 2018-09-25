@@ -14,8 +14,8 @@ export declare type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncRetur
     error: ISpawnASyncError;
     status: number;
     _output?: Buffer[];
-    stderrOld?: stream.Readable;
-    stdoutOld?: stream.Readable;
+    stderrStream?: stream.Readable;
+    stdoutStream?: stream.Readable;
 };
 export declare type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>> & {
     child?: SpawnASyncReturns<T>;

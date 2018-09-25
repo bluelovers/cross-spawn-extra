@@ -43,10 +43,10 @@ class CrossSpawnExtra extends CallableInstance {
         let ret = bluebird.resolve();
         child = fn(...argv);
         ret.child = child;
+        child.stderrStream = child.stderr;
+        child.stdoutStream = child.stdout;
         ret = ret.thenReturn(new bluebird(function (resolve, reject) {
             ret.child = child;
-            child.stderrOld = child.stderr;
-            child.stdoutOld = child.stdout;
             [
                 'stderr',
                 'stdout',

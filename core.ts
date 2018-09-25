@@ -23,14 +23,26 @@ export type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & 
 	error: ISpawnASyncError,
 	status: number,
 
+	/**
+	 * a buffer list by realy order of output (include stdout , stderr)
+	 */
 	_output?: Buffer[],
 
-	stderrOld?: stream.Readable,
-	stdoutOld?: stream.Readable,
+	/**
+	 * source stderr stream
+	 */
+	stderrStream?: stream.Readable,
+	/**
+	 * source stdout stream
+	 */
+	stdoutStream?: stream.Readable,
 };
 
 export type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>> & {
 
+	/**
+	 * can do anything as u want like source spawn do
+	 */
 	child?: SpawnASyncReturns<T>,
 
 };
@@ -43,6 +55,7 @@ export interface ISpawnASyncError<R = SpawnASyncReturns> extends Error
 	syscall?: string,
 	path?: string,
 	spawnargs?: string[],
+
 	child?: R,
 }
 
@@ -112,14 +125,14 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		// @ts-ignore
 		ret.child = child;
 
+		child.stderrStream = child.stderr;
+		child.stdoutStream = child.stdout;
+
 		// @ts-ignore
 		ret = ret.thenReturn(new bluebird<SpawnASyncReturns<T>>(function (resolve, reject)
 		{
 			// @ts-ignore
 			ret.child = child;
-
-			child.stderrOld = child.stderr;
-			child.stdoutOld = child.stdout;
 
 			[
 				'stderr',

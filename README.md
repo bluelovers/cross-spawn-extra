@@ -29,7 +29,7 @@ const crossSpawn = CrossSpawn.use(require('cross-spawn'));
 ```
 
 ```ts
-let bin = './bin/err0002';
+let bin = './bin/log0001';
 
 let cp = crossSpawn('node', [
 	bin,
@@ -51,6 +51,9 @@ let cp = crossSpawn('node', [
 function log(child: SpawnASyncReturns)
 {
 	let { stdout, stderr, output, _output, status, signal, pid } = child;
+	
+	// can still via stream, but it already close
+	let { stderrStream, stdoutStream } = child;
 
 	console.log({
 		pid,
@@ -63,4 +66,19 @@ function log(child: SpawnASyncReturns)
 
 	return child;
 }
+```
+
+`stdout` only show stdout  
+`stderr` only show stderr
+
+but `_output` can show real output order
+
+```json5
+{ pid: 54268,
+  error: false,
+  status: 0,
+  stdout: 'log 0\nlog 2\nlog 4\ndebug 5\nlog 6\ninfo 7\nlog 8\n',
+  stderr: 'error 1\nwarn 3\n',
+  _output:
+   'log 0\nerror 1\nlog 2\nwarn 3\nlog 4\ndebug 5\nlog 6\ninfo 7\nlog 8\n' }
 ```
