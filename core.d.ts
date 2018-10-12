@@ -1,3 +1,6 @@
+/**
+ * Created by user on 2018/9/25/025.
+ */
 /// <reference types="node" />
 import CallableInstance = require('callable-instance2');
 import CrossSpawn = require('cross-spawn');
@@ -9,19 +12,37 @@ export declare const SYM_CROSS_SPAWN: unique symbol;
 export declare const SYM_BLUEBIRD: unique symbol;
 export { SpawnOptions, SpawnSyncOptions, SpawnSyncOptionsWithBufferEncoding, SpawnSyncOptionsWithStringEncoding, };
 export declare type SpawnSyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & {
+    /**
+     * fake async api, this not same as async return
+     */
     then<R>(fn: (child: child_process.SpawnSyncReturns<T>) => R): bluebird<R>;
     error: ISpawnASyncError;
 };
 export declare type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & child_process.ChildProcess & {
     error: ISpawnASyncError;
     status: number;
+    /**
+     * a buffer list by realy order of output (include stdout , stderr)
+     */
     _output?: Buffer[];
+    /**
+     * source stderr stream
+     */
     stderrStream?: stream.Readable;
+    /**
+     * source stdout stream
+     */
     stdoutStream?: stream.Readable;
 };
 export declare type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>> & {
+    /**
+     * can do anything as u want like source spawn do
+     */
     child?: SpawnASyncReturns<T>;
 };
+/**
+ * Error Class
+ */
 export interface ISpawnASyncError<R = SpawnASyncReturns> extends Error {
     message: string;
     code?: string;
@@ -48,17 +69,9 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     protected readonly [SYM_CROSS_SPAWN]: typeof CrossSpawn;
     protected readonly [SYM_BLUEBIRD]: typeof bluebird;
     readonly default: this;
-    constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise);
-    static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
-    static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
-    static use(cs?: any, p?: any): CrossSpawnExtra;
-    static use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
-    use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
-    use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
-    use(cs?: any, p?: any): CrossSpawnExtra;
-    use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
-    core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess;
-    core<T>(...argv: any[]): child_process.ChildProcess;
+    /**
+     * sync version of child_process.spawnSync(command[, args][, options])
+     */
     sync(command: string): SpawnSyncReturns<Buffer>;
     sync(command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
     sync(command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
@@ -67,9 +80,51 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     sync(command: string, args?: Array<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
     sync(command: string, args?: Array<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
     sync<T = Buffer>(...argv: any[]): SpawnSyncReturns<T>;
+    /**
+     * async version of child_process.spawn(command[, args][, options])
+     */
     async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
     async<T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
     async<T = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T>;
+    spawnSync: {
+        (command: string): SpawnSyncReturns<Buffer>;
+        (command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
+        (command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
+        (command: string, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
+        (command: string, args?: string[], options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
+        (command: string, args?: string[], options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
+        (command: string, args?: string[], options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
+        <T = Buffer>(...argv: any[]): SpawnSyncReturns<T>;
+    };
+    spawn: {
+        <T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
+        <T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
+        <T = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T>;
+    };
+    /**
+     * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+     */
+    constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise);
+    /**
+     * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+     */
+    static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
+    static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
+    static use(cs?: any, p?: any): CrossSpawnExtra;
+    static use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
+    /**
+     * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+     */
+    use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
+    use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
+    use(cs?: any, p?: any): CrossSpawnExtra;
+    use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
+    core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess;
+    core<T>(...argv: any[]): child_process.ChildProcess;
+    readonly coreSync: typeof child_process.spawnSync;
+    /**
+     * stripAnsi a Buffer or string
+     */
     static stripAnsi(input: Buffer, toStr: true): string;
     static stripAnsi(input: Buffer, toStr?: boolean): Buffer;
     static stripAnsi(input: string, toStr?: boolean): string;

@@ -34,6 +34,9 @@ export {
 	ISpawnASyncError,
 }
 
+/**
+ * @see core.d.ts
+ */
 const crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, bluebird);
 
 // @ts-ignore

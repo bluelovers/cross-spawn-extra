@@ -8,9 +8,49 @@ npm install cross-spawn-extra cross-spawn
 
 ## demo
 
-[index.d.ts](index.d.ts)
-[core.d.ts](core.d.ts)
-[type.d.ts](type.d.ts)
+* [Core API](core.d.ts)
+* [Options](type.d.ts)
+* 
+```ts
+export interface SpawnOptions
+{
+	cwd?: string;
+	env?: any;
+	stdio?: 'inherit' | 'ignore' | 'pipe' | any | Array<'inherit' | 'ignore' | 'pipe' | any>;
+	detached?: boolean;
+	uid?: number;
+	gid?: number;
+	shell?: boolean | string;
+	windowsVerbatimArguments?: boolean;
+	windowsHide?: boolean;
+
+	/**
+	 * Strip ANSI escape codes
+	 */
+	stripAnsi?: boolean,
+}
+
+export interface SpawnSyncOptions {
+	cwd?: string;
+	input?: string | Buffer;
+	stdio?: 'inherit' | 'ignore' | 'pipe' | any | Array<'inherit' | 'ignore' | 'pipe' | any>;
+	env?: any;
+	uid?: number;
+	gid?: number;
+	timeout?: number;
+	killSignal?: string;
+	maxBuffer?: number;
+	encoding?: string;
+	shell?: boolean | string;
+	windowsHide?: boolean;
+	windowsVerbatimArguments?: boolean;
+
+	/**
+	 * Strip ANSI escape codes
+	 */
+	stripAnsi?: boolean,
+}
+```
 
 ```ts
 import crossSpawn = require('cross-spawn-extra');
@@ -36,6 +76,11 @@ let cp = crossSpawn('node', [
 	bin,
 ], {
 	cwd: __dirname,
+	
+	/**
+	 * Strip ANSI escape codes
+	 */
+	stripAnsi: true,
 })
 	.then(function (child)
 	{

@@ -13,6 +13,7 @@ let cp = crossSpawn.async('node', [
 ], {
 	cwd: __dirname,
 	stdio: 'inherit',
+	stripAnsi: true,
 })
 	.then(function (child)
 	{

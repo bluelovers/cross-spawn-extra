@@ -72,6 +72,9 @@ export type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>
 
 };
 
+/**
+ * Error Class
+ */
 export interface ISpawnASyncError<R = SpawnASyncReturns> extends Error
 {
 	message: string,
@@ -108,47 +111,9 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 	public readonly default = this;
 
-	constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
-	{
-		super('async');
-
-		this[SYM_CROSS_SPAWN] = cs || CrossSpawn;
-		// @ts-ignore
-		this[SYM_BLUEBIRD] = p || bluebird;
-
-		[
-			'core',
-			'async',
-			'sync',
-		].forEach(name => this[name] = this[name].bind(this));
-	}
-
-	static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
-	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
-	static use(cs?, p?): CrossSpawnExtra
-	static use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
-	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
-	{
-		return new this<R>(cs, p)
-	}
-
-	use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
-	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
-	use(cs?, p?): CrossSpawnExtra
-	use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
-	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
-	{
-		return new CrossSpawnExtra<R>(cs, p)
-	}
-
-	core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess
-	core<T>(...argv): child_process.ChildProcess
-	core<T>(...argv): child_process.ChildProcess
-	{
-		// @ts-ignore
-		return this[SYM_CROSS_SPAWN](...argv);
-	}
-
+	/**
+	 * sync version of child_process.spawnSync(command[, args][, options])
+	 */
 	sync(command: string): SpawnSyncReturns<Buffer>;
 	sync(command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
 	sync(command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
@@ -174,6 +139,9 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		return child;
 	}
 
+	/**
+	 * async version of child_process.spawn(command[, args][, options])
+	 */
 	async<T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
 	async<T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>
 	async<T = Buffer>(...argv): SpawnASyncReturnsPromise<T>
@@ -302,6 +270,67 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		return ret;
 	}
 
+	spawnSync = this.sync;
+	spawn = this.async;
+
+	/**
+	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+	 */
+	constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	{
+		super('async');
+
+		this[SYM_CROSS_SPAWN] = cs || CrossSpawn;
+		// @ts-ignore
+		this[SYM_BLUEBIRD] = p || bluebird;
+
+		[
+			'core',
+			'async',
+			'sync',
+		].forEach(name => this[name] = this[name].bind(this));
+	}
+
+	/**
+	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+	 */
+	static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
+	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
+	static use(cs?, p?): CrossSpawnExtra
+	static use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
+	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	{
+		return new this<R>(cs, p)
+	}
+
+	/**
+	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
+	 */
+	use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
+	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
+	use(cs?, p?): CrossSpawnExtra
+	use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
+	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	{
+		return new CrossSpawnExtra<R>(cs, p)
+	}
+
+	core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess
+	core<T>(...argv): child_process.ChildProcess
+	core<T>(...argv): child_process.ChildProcess
+	{
+		// @ts-ignore
+		return this[SYM_CROSS_SPAWN](...argv);
+	}
+
+	get coreSync()
+	{
+		return this[SYM_CROSS_SPAWN].sync;
+	}
+
+	/**
+	 * stripAnsi a Buffer or string
+	 */
 	static stripAnsi(input: Buffer, toStr: true): string
 	static stripAnsi(input: Buffer, toStr?: boolean): Buffer
 	static stripAnsi(input: string, toStr?: boolean): string

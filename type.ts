@@ -2,8 +2,6 @@
 
 export * from 'child_process';
 
-
-
 export interface SpawnOptions
 {
 	cwd?: string;
