@@ -1,6 +1,6 @@
 {
   "name": "cross-spawn-extra",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "a async version for cross-spawn and make it return like as sync return",
   "homepage": "https://github.com/bluelovers/cross-spawn-extra#readme",
   "bugs": {

@@ -2,11 +2,13 @@
 
 import * as child_process from 'child_process';
 import * as stream from "stream";
-import bluebird = require('bluebird');
+import _Bluebird = require('bluebird');
 import CrossSpawn = require('cross-spawn');
 import {
 	CrossSpawnExtra,
 } from './core';
+
+import Namespace = require('./core');
 
 import {
 	SpawnASyncReturns,
@@ -21,6 +23,8 @@ import {
 	SpawnSyncOptionsWithBufferEncoding,
 	SpawnSyncOptionsWithStringEncoding,
 } from "./type";
+
+import _TYPE = require('./type');
 
 export {
 	SpawnOptions,
@@ -37,7 +41,7 @@ export {
 /**
  * @see core.d.ts
  */
-const crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, bluebird);
+let crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, _Bluebird);
 
 // @ts-ignore
 export = crossSpawnExtra

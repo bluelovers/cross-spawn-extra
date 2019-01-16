@@ -4,9 +4,10 @@
 /// <reference types="node" />
 import CallableInstance = require('callable-instance2');
 import CrossSpawn = require('cross-spawn');
-import bluebird = require('bluebird');
-import * as child_process from 'child_process';
-import * as stream from "stream";
+import Bluebird = require('bluebird');
+import child_process = require('child_process');
+import stream = require('stream');
+export { Bluebird };
 import { SpawnOptions, SpawnSyncOptions, SpawnSyncOptionsWithBufferEncoding, SpawnSyncOptionsWithStringEncoding } from "./type";
 export declare const SYM_CROSS_SPAWN: unique symbol;
 export declare const SYM_BLUEBIRD: unique symbol;
@@ -15,7 +16,7 @@ export declare type SpawnSyncReturns<T = Buffer> = child_process.SpawnSyncReturn
     /**
      * fake async api, this not same as async return
      */
-    then<R>(fn: (child: child_process.SpawnSyncReturns<T>) => R): bluebird<R>;
+    then<R>(fn: (child: child_process.SpawnSyncReturns<T>) => R): Bluebird<R>;
     error: ISpawnASyncError;
 };
 export declare type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & child_process.ChildProcess & {
@@ -34,7 +35,7 @@ export declare type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncRetur
      */
     stdoutStream?: stream.Readable;
 };
-export declare type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>> & {
+export declare type SpawnASyncReturnsPromise<T = Buffer> = Bluebird<SpawnASyncReturns<T>> & {
     /**
      * can do anything as u want like source spawn do
      */
@@ -67,7 +68,7 @@ interface CallableInstance<R = SpawnASyncReturnsPromise> {
 }
 export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInstance<R> {
     protected readonly [SYM_CROSS_SPAWN]: typeof CrossSpawn;
-    protected readonly [SYM_BLUEBIRD]: typeof bluebird;
+    protected readonly [SYM_BLUEBIRD]: typeof Bluebird;
     readonly default: this;
     /**
      * sync version of child_process.spawnSync(command[, args][, options])
@@ -104,19 +105,19 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     /**
      * create new CrossSpawnExtra with Custom CrossSpawn, Promise
      */
-    constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise);
+    constructor(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise);
     /**
      * create new CrossSpawnExtra with Custom CrossSpawn, Promise
      */
-    static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
-    static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
+    static use(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra;
+    static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra<R>;
     static use(cs?: any, p?: any): CrossSpawnExtra;
     static use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
     /**
      * create new CrossSpawnExtra with Custom CrossSpawn, Promise
      */
-    use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra;
-    use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>;
+    use(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra;
+    use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra<R>;
     use(cs?: any, p?: any): CrossSpawnExtra;
     use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
     core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess;

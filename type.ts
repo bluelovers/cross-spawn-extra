@@ -1,5 +1,6 @@
 /// <reference types="node" />
 
+import child_process = require('child_process');
 export * from 'child_process';
 
 export interface SpawnOptions

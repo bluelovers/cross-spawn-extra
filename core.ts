@@ -5,16 +5,12 @@
 // @ts-ignore
 import CallableInstance = require('callable-instance2');
 import CrossSpawn = require('cross-spawn');
-import {
-//	SpawnOptions,
-//	SpawnSyncOptions,
-//	SpawnSyncOptionsWithBufferEncoding,
-//	SpawnSyncOptionsWithStringEncoding,
-} from "child_process";
-import bluebird = require('bluebird');
-import * as child_process from 'child_process';
-import * as stream from "stream";
+import Bluebird = require('bluebird');
+import child_process = require('child_process');
+import stream = require('stream');
 import stripAnsi = require('strip-ansi');
+
+export { Bluebird }
 
 import {
 	SpawnOptions,
@@ -38,7 +34,7 @@ export type SpawnSyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & {
 	/**
 	 * fake async api, this not same as async return
 	 */
-	then<R>(fn: (child: child_process.SpawnSyncReturns<T>) => R): bluebird<R>,
+	then<R>(fn: (child: child_process.SpawnSyncReturns<T>) => R): Bluebird<R>,
 
 	error: ISpawnASyncError,
 };
@@ -63,7 +59,7 @@ export type SpawnASyncReturns<T = Buffer> = child_process.SpawnSyncReturns<T> & 
 	stdoutStream?: stream.Readable,
 };
 
-export type SpawnASyncReturnsPromise<T = Buffer> = bluebird<SpawnASyncReturns<T>> & {
+export type SpawnASyncReturnsPromise<T = Buffer> = Bluebird<SpawnASyncReturns<T>> & {
 
 	/**
 	 * can do anything as u want like source spawn do
@@ -107,7 +103,7 @@ interface CallableInstance<R = SpawnASyncReturnsPromise>
 export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInstance<R>
 {
 	protected readonly [SYM_CROSS_SPAWN]: typeof CrossSpawn;
-	protected readonly [SYM_BLUEBIRD]: typeof bluebird;
+	protected readonly [SYM_BLUEBIRD]: typeof Bluebird;
 
 	public readonly default = this;
 
@@ -126,7 +122,10 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	{
 		// @ts-ignore
 		let child = this[SYM_CROSS_SPAWN].sync<T>(...argv);
-		child.then = bluebird.method((fn) => fn(child));
+		child.then = Bluebird.method((fn) => {
+			delete child.then;
+			return fn(child)
+		});
 
 		let [command, args, options] = argv;
 
@@ -158,7 +157,7 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		let child: SpawnASyncReturns<T>;
 		let fn = self[SYM_CROSS_SPAWN] as typeof CrossSpawn;
 
-		let ret = bluebird.resolve();
+		let ret = Bluebird.resolve();
 
 		let [command, args, options] = argv;
 
@@ -171,7 +170,7 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 		child.stdoutStream = child.stdout;
 
 		// @ts-ignore
-		ret = ret.thenReturn(new bluebird<SpawnASyncReturns<T>>(function (resolve, reject)
+		ret = ret.thenReturn(new Bluebird<SpawnASyncReturns<T>>(function (resolve, reject)
 		{
 			// @ts-ignore
 			ret.child = child;
@@ -276,13 +275,13 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	/**
 	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
 	 */
-	constructor(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	constructor(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise)
 	{
 		super('async');
 
 		this[SYM_CROSS_SPAWN] = cs || CrossSpawn;
 		// @ts-ignore
-		this[SYM_BLUEBIRD] = p || bluebird;
+		this[SYM_BLUEBIRD] = p || Bluebird;
 
 		[
 			'core',
@@ -294,11 +293,11 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	/**
 	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
 	 */
-	static use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
-	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
+	static use(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra
+	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra<R>
 	static use(cs?, p?): CrossSpawnExtra
 	static use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
-	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	static use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise)
 	{
 		return new this<R>(cs, p)
 	}
@@ -306,11 +305,11 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	/**
 	 * create new CrossSpawnExtra with Custom CrossSpawn, Promise
 	 */
-	use(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra
-	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise): CrossSpawnExtra<R>
+	use(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra
+	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise): CrossSpawnExtra<R>
 	use(cs?, p?): CrossSpawnExtra
 	use<R = SpawnASyncReturnsPromise>(cs?, p?): CrossSpawnExtra<R>
-	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof bluebird | typeof Promise)
+	use<R = SpawnASyncReturnsPromise>(cs?: typeof CrossSpawn, p?: typeof Bluebird | typeof Promise)
 	{
 		return new CrossSpawnExtra<R>(cs, p)
 	}
