@@ -131,8 +131,8 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 		if (options && options.stripAnsi)
 		{
-			child.stderr = CrossSpawnExtra.stripAnsi(child.stderr);
-			child.stdout = CrossSpawnExtra.stripAnsi(child.stdout);
+			child.stderr = child.stderr && CrossSpawnExtra.stripAnsi(child.stderr);
+			child.stdout = child.stdout && CrossSpawnExtra.stripAnsi(child.stdout);
 		}
 
 		return child;
@@ -337,6 +337,11 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	static stripAnsi<T>(input: T, toStr?: boolean): T
 	static stripAnsi(input: string | Buffer, toStr?: boolean)
 	{
+		if (!input)
+		{
+			return input;
+		}
+
 		let isBuffer = Buffer.isBuffer(input);
 
 		input = input.toString();

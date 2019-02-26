@@ -76,3 +76,4 @@ gen
 /*.lock
 
 *.tmp
+/tsconfig.json.tpl

@@ -38,8 +38,8 @@ class CrossSpawnExtra extends CallableInstance {
         });
         let [command, args, options] = argv;
         if (options && options.stripAnsi) {
-            child.stderr = CrossSpawnExtra.stripAnsi(child.stderr);
-            child.stdout = CrossSpawnExtra.stripAnsi(child.stdout);
+            child.stderr = child.stderr && CrossSpawnExtra.stripAnsi(child.stderr);
+            child.stdout = child.stdout && CrossSpawnExtra.stripAnsi(child.stdout);
         }
         return child;
     }
@@ -141,6 +141,9 @@ class CrossSpawnExtra extends CallableInstance {
         return this[exports.SYM_CROSS_SPAWN].sync;
     }
     static stripAnsi(input, toStr) {
+        if (!input) {
+            return input;
+        }
         let isBuffer = Buffer.isBuffer(input);
         input = input.toString();
         input = stripAnsi(input);
@@ -152,3 +155,4 @@ class CrossSpawnExtra extends CallableInstance {
 }
 exports.CrossSpawnExtra = CrossSpawnExtra;
 exports.default = CrossSpawnExtra;
+//# sourceMappingURL=core.js.map

@@ -8,3 +8,4 @@ const core_1 = require("./core");
  */
 let crossSpawnExtra = core_1.CrossSpawnExtra.use(CrossSpawn, _Bluebird);
 module.exports = crossSpawnExtra;
+//# sourceMappingURL=index.js.map
