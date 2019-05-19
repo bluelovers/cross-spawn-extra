@@ -346,7 +346,8 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 		input = input.toString();
 
-		input = stripAnsi(input);
+		// @ts-ignore
+		input = stripAnsi(input) as string;
 
 		if (isBuffer && !toStr)
 		{
