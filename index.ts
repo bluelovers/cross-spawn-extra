@@ -2,8 +2,8 @@
 
 import * as child_process from 'child_process';
 import * as stream from "stream";
-import _Bluebird = require('bluebird');
-import CrossSpawn = require('cross-spawn');
+import _Bluebird from 'bluebird';
+import CrossSpawn from 'cross-spawn';
 import {
 	CrossSpawnExtra,
 } from './core';

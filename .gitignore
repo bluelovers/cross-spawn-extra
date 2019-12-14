@@ -28,16 +28,12 @@ tests/temp*
 !/.gitignore
 ### npm2 template
 
-
-
-tsconfig.json
-
 .github
 .gitkeep
 
 tests
 
-
+/*.tgz
 
 /~*
 
@@ -77,3 +73,9 @@ gen
 
 *.tmp
 /tsconfig.json.tpl
+/.nvmrc
+/.eslintrc.json.tpl
+/.eslintignore
+/.browserslistrc
+/tsconfig.esm.json.tpl
+/tsconfig.tsbuildinfo

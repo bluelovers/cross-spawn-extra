@@ -53,3 +53,7 @@ gen
 *.test.js
 *.test.js.map
 /test/
+/*.tpl
+/*.tsbuildinfo
+
+/*.tgz

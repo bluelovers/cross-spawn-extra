@@ -3,12 +3,12 @@
  */
 
 // @ts-ignore
-import CallableInstance = require('callable-instance2');
-import CrossSpawn = require('cross-spawn');
-import Bluebird = require('bluebird');
-import child_process = require('child_process');
-import stream = require('stream');
-import stripAnsi = require('strip-ansi');
+import CallableInstance from 'callable-instance2';
+import CrossSpawn from 'cross-spawn';
+import Bluebird from 'bluebird';
+import child_process from 'child_process';
+import stream from 'stream';
+import stripAnsi from 'strip-ansi';
 
 export { Bluebird }
 

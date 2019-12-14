@@ -2,11 +2,11 @@
  * Created by user on 2018/9/25/025.
  */
 /// <reference types="node" />
-import CallableInstance = require('callable-instance2');
-import CrossSpawn = require('cross-spawn');
-import Bluebird = require('bluebird');
-import child_process = require('child_process');
-import stream = require('stream');
+import CallableInstance from 'callable-instance2';
+import CrossSpawn from 'cross-spawn';
+import Bluebird from 'bluebird';
+import child_process from 'child_process';
+import stream from 'stream';
 export { Bluebird };
 import { SpawnOptions, SpawnSyncOptions, SpawnSyncOptionsWithBufferEncoding, SpawnSyncOptionsWithStringEncoding } from "./type";
 export declare const SYM_CROSS_SPAWN: unique symbol;
@@ -99,8 +99,8 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     };
     spawn: {
         <T = Buffer>(command: string, args?: string[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
-        <T = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T>;
-        <T = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T>;
+        <T_1 = Buffer>(command: string, args?: any[], options?: SpawnOptions): SpawnASyncReturnsPromise<T_1>;
+        <T_2 = Buffer>(...argv: any[]): SpawnASyncReturnsPromise<T_2>;
     };
     /**
      * create new CrossSpawnExtra with Custom CrossSpawn, Promise
@@ -122,7 +122,7 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
     use<R = SpawnASyncReturnsPromise>(cs?: any, p?: any): CrossSpawnExtra<R>;
     core<T>(command: string, args?: string[], options?: SpawnOptions): child_process.ChildProcess;
     core<T>(...argv: any[]): child_process.ChildProcess;
-    readonly coreSync: typeof child_process.spawnSync;
+    get coreSync(): typeof child_process.spawnSync;
     /**
      * stripAnsi a Buffer or string
      */
