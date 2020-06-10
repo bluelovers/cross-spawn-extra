@@ -25,7 +25,7 @@
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly": "yarn run ncu && yarn run sort-package-json && npx yarn-tool i && yarn run test",
-    "postpublish": "git commit -m \"chore(release): publish\" . & echo postpublish",
+    "postpublish": "git commit -m \"chore(release): publish\" . & git push & echo postpublish",
     "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx yarn-tool sort",
     "tsc:default": "tsc -p tsconfig.json",
