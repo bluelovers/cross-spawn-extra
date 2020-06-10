@@ -1,5 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`async _async 1`] = `
+Object {
+  "_output": Array [
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+  ],
+  "exitCode": 0,
+  "killed": false,
+  "output": Array [
+    null,
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+    Object {
+      "data": Array [],
+      "type": "Buffer",
+    },
+  ],
+  "stderr": Object {
+    "data": Array [],
+    "type": "Buffer",
+  },
+  "stdout": Object {
+    "data": Array [
+      34,
+      55,
+      55,
+      55,
+      34,
+      13,
+      10,
+    ],
+    "type": "Buffer",
+  },
+}
+`;
+
 exports[`async base 1`] = `
 Object {
   "_output": Array [
@@ -112,6 +168,62 @@ Object {
 }
 `;
 
+exports[`async star 1`] = `
+Object {
+  "_output": Array [
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+  ],
+  "exitCode": 0,
+  "killed": false,
+  "output": Array [
+    null,
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+    Object {
+      "data": Array [],
+      "type": "Buffer",
+    },
+  ],
+  "stderr": Object {
+    "data": Array [],
+    "type": "Buffer",
+  },
+  "stdout": Object {
+    "data": Array [
+      34,
+      55,
+      55,
+      55,
+      34,
+      13,
+      10,
+    ],
+    "type": "Buffer",
+  },
+}
+`;
+
 exports[`async unbind 1`] = `
 Object {
   "_output": Array [
@@ -168,7 +280,87 @@ Object {
 }
 `;
 
+exports[`sync _sync 1`] = `
+Object {
+  "output": Array [
+    null,
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+    Object {
+      "data": Array [],
+      "type": "Buffer",
+    },
+  ],
+  "stderr": Object {
+    "data": Array [],
+    "type": "Buffer",
+  },
+  "stdout": Object {
+    "data": Array [
+      34,
+      55,
+      55,
+      55,
+      34,
+      13,
+      10,
+    ],
+    "type": "Buffer",
+  },
+}
+`;
+
 exports[`sync base 1`] = `
+Object {
+  "output": Array [
+    null,
+    Object {
+      "data": Array [
+        34,
+        55,
+        55,
+        55,
+        34,
+        13,
+        10,
+      ],
+      "type": "Buffer",
+    },
+    Object {
+      "data": Array [],
+      "type": "Buffer",
+    },
+  ],
+  "stderr": Object {
+    "data": Array [],
+    "type": "Buffer",
+  },
+  "stdout": Object {
+    "data": Array [
+      34,
+      55,
+      55,
+      55,
+      34,
+      13,
+      10,
+    ],
+    "type": "Buffer",
+  },
+}
+`;
+
+exports[`sync star 1`] = `
 Object {
   "output": Array [
     null,
