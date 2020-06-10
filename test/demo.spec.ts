@@ -1,4 +1,4 @@
-import crossSpawn from '../index';
+import crossSpawn, { async as _async, sync as _sync } from '../index';
 
 describe(`async`, () =>
 {
@@ -16,6 +16,16 @@ describe(`async`, () =>
 	{
 
 		let actual = await crossSpawn.async('echo', ['777']);
+
+		_check(actual)
+
+		done();
+	});
+
+	test(`_async`, async (done) =>
+	{
+
+		let actual = await _async('echo', ['777']);
 
 		_check(actual)
 
@@ -59,6 +69,14 @@ describe(`sync`, () =>
 	{
 
 		let actual = crossSpawn.sync('echo', ['777']);
+
+		_check(actual)
+	});
+
+	test(`_sync`, () =>
+	{
+
+		let actual = _sync('echo', ['777']);
 
 		_check(actual)
 	});
