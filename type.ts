@@ -41,12 +41,15 @@ export interface SpawnSyncOptions {
 	 */
 	stripAnsi?: boolean,
 }
+
 export interface SpawnSyncOptionsWithStringEncoding extends SpawnSyncOptions {
 	encoding: BufferEncoding;
 }
+
 export interface SpawnSyncOptionsWithBufferEncoding extends SpawnSyncOptions {
 	encoding: string; // specify `null`.
 }
+
 export interface SpawnSyncReturns<T> {
 	pid: number;
 	output: string[];

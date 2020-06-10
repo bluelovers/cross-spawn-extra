@@ -92,9 +92,9 @@ export declare class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends Calla
         (command: string, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
         (command: string, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
         (command: string, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
-        (command: string, args?: string[], options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
-        (command: string, args?: string[], options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
-        (command: string, args?: string[], options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
+        (command: string, args?: Array<string>, options?: SpawnSyncOptionsWithStringEncoding): SpawnSyncReturns<string>;
+        (command: string, args?: Array<string>, options?: SpawnSyncOptionsWithBufferEncoding): SpawnSyncReturns<Buffer>;
+        (command: string, args?: Array<string>, options?: SpawnSyncOptions): SpawnSyncReturns<Buffer>;
         <T = Buffer>(...argv: any[]): SpawnSyncReturns<T>;
     };
     spawn: {

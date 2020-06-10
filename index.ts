@@ -8,7 +8,7 @@ import {
 	CrossSpawnExtra,
 } from './core';
 
-import Namespace = require('./core');
+import * as Namespace from './core';
 
 import {
 	SpawnASyncReturns,
@@ -26,7 +26,7 @@ import {
 
 import _TYPE = require('./type');
 
-export {
+export type {
 	SpawnOptions,
 	SpawnSyncOptions,
 	SpawnSyncOptionsWithBufferEncoding,
@@ -41,7 +41,7 @@ export {
 /**
  * @see core.d.ts
  */
-let crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, _Bluebird);
+const crossSpawnExtra = CrossSpawnExtra.use(CrossSpawn, _Bluebird);
 
 // @ts-ignore
 export = crossSpawnExtra

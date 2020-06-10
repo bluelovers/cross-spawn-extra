@@ -122,7 +122,9 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 	{
 		// @ts-ignore
 		let child = this[SYM_CROSS_SPAWN].sync<T>(...argv);
+		// @ts-ignore
 		child.then = Bluebird.method((fn) => {
+			// @ts-ignore
 			delete child.then;
 			return fn(child)
 		});
@@ -131,10 +133,13 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 
 		if (options && options.stripAnsi)
 		{
+			// @ts-ignore
 			child.stderr = child.stderr && CrossSpawnExtra.stripAnsi(child.stderr);
+			// @ts-ignore
 			child.stdout = child.stdout && CrossSpawnExtra.stripAnsi(child.stdout);
 		}
 
+		// @ts-ignore
 		return child;
 	}
 
@@ -288,6 +293,8 @@ export class CrossSpawnExtra<R = SpawnASyncReturnsPromise> extends CallableInsta
 			'async',
 			'sync',
 		].forEach(name => this[name] = this[name].bind(this));
+
+		Object.defineProperty(this, "__esModule", { value: true });
 	}
 
 	/**

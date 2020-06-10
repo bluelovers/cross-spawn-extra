@@ -12,7 +12,7 @@
     "url": "git+https://github.com/bluelovers/cross-spawn-extra.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "bluelovers",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -20,13 +20,14 @@
   "scripts": {
     "coverage": "npx nyc npm run test",
     "lint": "eslint .",
-    "ncu": "npx npm-check-updates -u",
+    "test": "jest",
     "npm:publish": "npm publish",
-    "prepublishOnly": "npm run ncu && npm run sort-package-json",
-    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
-    "postpublish": "git commit -m \"publish new version\" .",
-    "sort-package-json": "npx sort-package-json ./package.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "prepublishOnly": "yarn run ncu && yarn run sort-package-json && npx yarn-tool i && yarn run test",
+    "postpublish": "git commit -m \"chore(release): publish\" . & echo postpublish",
+    "ncu": "npx yarn-tool ncu -u",
+    "sort-package-json": "npx yarn-tool sort",
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
@@ -40,7 +41,10 @@
     "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.13"
+    "@bluelovers/tsconfig": "^1.0.19",
+    "@types/jest": "^26.0.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0"
   },
   "peerDependencies": {}
 }
